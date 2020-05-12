@@ -1,31 +1,32 @@
 <div class="container">
    <div class="row">
-      <div class="box-newsletter">
-         <form action="" method="post" class="form-inline" class="newsletter">
-            <div class="newsletters">
+      <div class="box-subscribers">
+         <form action="" method="post" class="form-inline" class="subscribers">
+            <div class="subscribers">
                <div class="col-xs-12 col-md-3">
                   <h3>{{ heading_title }}</h3>
+                  {{ test }}
                </div>
                <div class="col-xs-12 col-md-6">
                   <div class="input-group">
-                     <div class="input-group-addon"><i class="fa fa-at"></i></div>
+                     <div class="input-group-addon"><i class="fa fa-envelope-o"></i></div>
                      <input type="email" name="txtemail" id="txtemail" value="" placeholder="" class="form-control input-lg" /> 
                   </div>
-                  <p>{{ entry_submit }}</p>
+                  <p><label><input type="checkbox" id="agree"> {{ entry_submit }} </label></p>
                </div>
-               <div class="col-xs-12 col-md-3"><button type="submit" class="newsletter btn btn-primary btn-lg" onclick="return subscribe();">{{ button_submit }}</button></div>
+               <div class="col-xs-12 col-md-3"><button type="submit" id="subscribe" class="subscribers btn btn-primary btn-lg" onclick="return Subscribe();" disabled="disabled">{{ button_submit }}</button></div>
             </div>
          </form>
       </div>
    </div>
 </div>
 <style>
-.newsletters .col-md-12,.newsletters .col-md-3{text-align:center}.newsletters .input-group{width:100%;display:table}.newsletters p{padding:10px;text-align:center}
+.subscribers .col-md-12,.subscribers .col-md-3{text-align:center}.subscribers .input-group{width:100%;display:table}.subscribers p{padding:10px;text-align:center}
 </style>
 <script>
-    function subscribe()
+    function Subscribe()
     {
-        var emailpattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}(.[a-zA-Z]{2})?$/;
+        var emailpattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}(.[a-zA-Z]{2})?$/; // email pattern for email text field
         var email = $('#txtemail').val();     
 
         if(email != "")
@@ -33,7 +34,7 @@
             if(emailpattern.test(email)){
                 $.ajax({
                     type: 'POST',
-                    url: 'index.php?route=extension/module/newsletters/newSubscribe',
+                    url: 'index.php?route=extension/module/subscribers/newSubscribe',
                     dataType: 'json',
                     data: {email: $('#txtemail').val()},
                     success: function(data){ alert(data.message);}
@@ -52,4 +53,12 @@
             return false;
         }
     }
+
+    $('#agree').click(function(){
+	   if ($(this).is(':checked')){
+		$('#subscribe').removeAttr('disabled');
+	 } else {
+		$('#subscribe').attr('disabled', 'disabled'); 
+	 }
+});
 </script>
