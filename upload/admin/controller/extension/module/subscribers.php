@@ -52,6 +52,27 @@ class ControllerExtensionModuleSubscribers extends Controller {
 			$data['module_subscribers_status'] = $this->config->get('module_subscribers_status');
 		}
 
+		$this->load->model('catalog/information');
+
+		$data['informations'] = $this->model_catalog_information->getInformations();
+		
+		if (isset($this->request->post['module_subscribers_agree'])) {
+			$data['module_subscribers_agree'] = $this->request->post['module_subscribers_agree'];
+		} else {
+			$data['module_subscribers_agree'] = $this->config->get('module_subscribers_agree');
+		}
+
+		$this->load->model('customer/customer_group');
+
+		$data['customer_groups'] = $this->model_customer_customer_group->getCustomerGroups();
+		
+		if (isset($this->request->post['module_subscribers_customer_group'])) {
+			$data['module_subscribers_customer_group'] = $this->request->post['module_subscribers_customer_group'];
+		} else {
+			$data['module_subscribers_customer_group'] = $this->config->get('module_subscribers_customer_group');
+		}
+
+
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
@@ -61,7 +82,7 @@ class ControllerExtensionModuleSubscribers extends Controller {
 	}
 
 	protected function validate() {
-		if (!$this->user->hasPermission('modify', 'extension/module/subscribers')) {
+		if (!$this->user->hasPermission('modify', 'extension/module/banner')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 
